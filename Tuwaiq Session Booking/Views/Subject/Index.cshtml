@@ -1,0 +1,63 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var Subjects = (List<Subject>)ViewData["Subjects"];
+}
+
+<div class="content">
+    @{
+        if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+        else if (Subjects == null || Subjects.Count == 0)
+        {
+            <div class="alert alert-danger" role="alert">
+                No subjects Yet!!
+            </div>
+
+        }
+        else
+        {
+            <h1>Subjects</h1>
+            <div class="div-background">
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        @if (User.IsInRole("Instructor"))
+                        {
+                            <th></th>
+                            <th></th>
+                        }
+                    </tr>
+                    <tbody>
+                        @foreach (var subject in Subjects)
+                        {
+                            <tr>
+                                <td>@subject.SubjectName</td>
+                                @if (User.IsInRole("Instructor"))
+                                {
+                                    <td>
+                                        <a class="btn btn-colour-2" href="Subject/Edit/?id=@subject.Id">Edit</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-colour-2" href="Subject/Delete/?id=@subject.Id">Delete</a>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        }
+        @if (User.IsInRole("Instructor"))
+        {
+            <a class="btn btn-colour-1" href="Subject/Create">Add a new subject</a>
+        }
+        }
+
+    </div>

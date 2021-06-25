@@ -1,0 +1,38 @@
+﻿
+@model Profile
+@{
+    var Profile = (Profile)ViewData["Profile"]; 
+}
+<div class="content">
+    <h2>Upload Profile Photo</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div>
+                        <input type="hidden" name="Id" asp-for="@Profile.Id" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        <input type="hidden" name="ApplicationUserId" asp-for="@Profile.ApplicationUserId" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        <input type="file" asp-for="ImageData" value="@Profile.ImageData" class="btn btn-colour-2" id="Image" aria-describedby="Image">
+                    </div>
+                </div>
+                @* <div class="form-group">
+                        <label asp-for="FirstName">First Name</label>
+                        <input type="text" asp-for="FirstName" value="@Profile.FirstName" class="form-control" id="FirstName" aria-describedby="firstName">
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName">Last Image</label>
+                        <input type="text" asp-for="LastName" value="@Profile.LastName" class="form-control" id="lastName" aria-describedby="lastName">
+                    </div>*@
+                <button type="submit" class="btn btn-colour-1" value="Update">Save</button>
+            </form>
+        </div>
+    </div>
+</div>

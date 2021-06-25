@@ -1,0 +1,72 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var Sessions = (List<Session>)ViewData["Sessions"];
+    var ConfirmedSessions = (List<Session>)ViewData["ConfirmedSessions"];
+    var RequestedSessions = (List<Session>)ViewData["RequstedSessions"];
+    var Subjects = (List<Subject>)ViewData["Subjects"];
+    var Classes = (List<Class>)ViewData["Classes"];
+
+}
+
+<div class="content">
+    @{
+        if (RequestedSessions == null || RequestedSessions.Count == 0)
+        {
+
+            <h3>No Requested Sessions!!</h3>
+
+        }
+        else
+        {
+            <h1>Requested Sessions</h1>
+
+            <table class="table">
+                <tr>
+                    <th>Time</th>
+                    <th>Duration</th>
+                    <th>Location</th>
+                    <th>Subject</th>
+                    @if (User.IsInRole("Instructor"))
+                    {
+
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    }
+
+                </tr>
+                <tbody>
+                    @foreach (var Session in Sessions)
+                    {
+                        if(Session.Confirmed == false) { 
+                        <tr>
+                            <td>@Session.SessionTime</td>
+                            <td>@Session.Duration</td>
+                            @{var sessionClass = Classes.Find(c => c.Id == Session.ClassId);}
+                            <td>@sessionClass.ClassName</td>
+
+                            @{var sessionSubject = Subjects.Find(s => s.Id == Session.SubjectId);}
+                            <td>@sessionSubject.SubjectName</td>
+                            @if (User.IsInRole("Instructor"))
+                            {
+                                <td>
+                                    <a class="btn btn-colour-2" href="../Session/Edit/?id=@Session.Id">Edit</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-colour-2" href="../Session/Delete/?id=@Session.Id">Delete</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-colour-2" href="../Session/Confirm/?id=@Session.Id">Confirm</a>
+                                </td>
+                            }
+                        </tr>
+                                    }
+                                }
+                </tbody>
+            </table>
+        }
+    }
+
+</div>

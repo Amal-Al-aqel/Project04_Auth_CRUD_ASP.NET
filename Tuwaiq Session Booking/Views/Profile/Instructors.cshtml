@@ -1,0 +1,57 @@
+﻿@{
+    @using Microsoft.AspNetCore.Identity
+    @using Tuwaiq_Session_Booking.Data;
+    @inject UserManager<IdentityUser> UserManager
+    //@inject UserManager<ApplicationUser> ApplicationUserManager
+    var AllUsers = (List<IdentityUser>)ViewData["AllUsers"];
+    var Instructors = (List<IdentityUserRole<string>>)ViewData["Instructors"];
+    var Students = (List<IdentityUserRole<string>>)ViewData["Students"];
+    var Profiles = (List<Profile>)ViewData["Profiles"];
+}
+<div class="content">
+    <h1>Instructors</h1>
+    <div class="container">
+        <div class="row">
+            @{
+                if (Instructors == null || Instructors.Count == 0)
+                {
+                    <h4>No Instructors yet!!</h4>
+                }
+                else
+                {
+                    var imgsrc = @Url.Content("~/img/userProfile.png"); // deafult image that's displayed when image is not available
+                    foreach (var instructor in Instructors)
+                    {
+                        var FindUser = AllUsers.Find(u => u.Id == instructor.UserId);
+                        var FindProfile = Profiles.Find(p => p.ApplicationUserId == instructor.UserId);
+
+                        if (FindUser != null && FindProfile != null)
+                        {
+                            if (FindProfile.ImageData != null)
+                            {
+                                var base64 = Convert.ToBase64String(FindProfile.ImageData);
+                                imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+                            }
+                            <div class="col-sm-3 d-flex align-items-stretch">
+                                <div class="card text-dark mb-3">
+                                    <div class="card-block">
+                                        <img class="card-img-top" src="@imgsrc" alt="Card image cap" >
+                                        <div class="card-body">
+                                            <h5 class="card-title">@FindProfile.FirstName   @FindProfile.LastName</h5>
+                                            <p class="card-text">Email: @FindUser.UserName</p>
+                                            @*<p class="card-text">Death Date: @inventor.DeathDate.Date.ToString("d")</p>
+                                                <p class="card-text">Nationality: @inventor.Nationality</p>*@
+                                            @*<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>*@
+                                            <a href="/Profile/Index/?id=@FindProfile.ApplicationUserId"  class="text-info">Read More</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>

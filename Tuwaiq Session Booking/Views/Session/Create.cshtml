@@ -1,0 +1,47 @@
+﻿@using System.Globalization;
+
+@{
+    var Subjects = (List<Subject>)ViewData["Subjects"];
+    var Classes = (List<Class>)ViewData["Classes"];
+}
+
+
+@model Session
+    <div class="content">
+        <h1>Add a new session</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create" method="post">
+                    <div class="form-group">
+                        <label asp-for="SessionTime">Session Time</label>
+                        <input type="datetime-local" asp-for="SessionTime" min="@DateTime.Now.AddHours(2).ToString("yyyy-MM-ddThh:mm")" max="@DateTime.Now.AddDays(7).ToString("yyyy-MM-ddThh:mm")" class="form-control" id="sessionTime" aria-describedby="sessionTime" placeholder="Enter Session Time">
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Duration">Session Duration</label>
+                        <input type="text" asp-for="Duration" class="form-control" id="duration" aria-describedby="sessionDuration" placeholder="Enter Session Duration">
+                    </div>
+                    <div class="form-group">
+                        <label for="classes">Location</label>
+                        <select id="classes" name="classes">
+                            @foreach (var classItem in Classes)
+                            {
+                                <option value="@classItem.ClassName">@classItem.ClassName</option>
+
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjects">Subject</label>
+                        <select id="subjects" name="subjects">
+                            @foreach (var Subject in Subjects)
+                            {
+                                <option value="@Subject.SubjectName">@Subject.SubjectName</option>
+                            }
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-colour-1" value="Submit">Add</button>
+                </form>
+            </div>
+        </div>
+        </div>

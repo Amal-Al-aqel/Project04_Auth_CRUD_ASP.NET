@@ -1,0 +1,64 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var Classes = (List<Class>)ViewData["Classes"];
+}
+<div class="content">
+    @{
+        if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+        else if (Classes == null || Classes.Count == 0)
+        {
+            <div class="alert alert-danger" role="alert">
+                No classes Yet!!
+            </div>
+        }
+        else
+        {
+            <h1>Classes</h1>
+            <div class="div-background">
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Floor</th>
+                        @if (User.IsInRole("Instructor"))
+                        {
+                            <th></th>
+                            <th></th>
+                        }
+                    </tr>
+                    <tbody>
+                        @foreach (var classItem in Classes)
+                        {
+                            <tr>
+                                <td>@classItem.ClassName</td>
+                                <td>@classItem.Floor</td>
+                                @if (User.IsInRole("Instructor"))
+                                {
+
+                                    <td>
+                                        <a class="btn btn-colour-2" href="Class/Edit/?id=@classItem.Id">Edit</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-colour-2" href="Class/Delete/?id=@classItem.Id">Delete</a>
+                                    </td>
+                                }
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        }
+        @if (User.IsInRole("Instructor"))
+        {
+            <a href="Class/Create" class="btn btn-colour-1">Add a new class</a>
+        }
+        }
+    </div>
